@@ -42,6 +42,7 @@ if IsDuplicityVersion() then
     
     function Framework.ox.SendLog(message)
             -- noop
+            lib.logger(-1, "ps-housing logger", message)
     end
 
     return

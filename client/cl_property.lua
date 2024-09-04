@@ -32,7 +32,8 @@ function Property:new(propertyData)
     propertyData.furnitures = {}
     self.propertyData = propertyData
 
-    local citizenid = PlayerData.citizenid
+    --local citizenid = PlayerData.citizenid
+    local citizenid = PlayerData.identifier
 
     self.owner = propertyData.owner == citizenid
     self.has_access = lib.table.contains(self.propertyData.has_access, citizenid)
@@ -175,7 +176,8 @@ function Property:RegisterGarageZone()
         label = self.propertyData.street .. self.property_id .. " Garage",
     }
 
-    TriggerEvent("qb-garages:client:addHouseGarage", self.property_id, data)
+    --TODO: Migrate to frp_parkings
+    --TriggerEvent("qb-garages:client:addHouseGarage", self.property_id, data)
 
     self.garageZone = lib.zones.box({
         coords = vec3(garageData.x, garageData.y, garageData.z),
@@ -183,7 +185,7 @@ function Property:RegisterGarageZone()
         rotation = garageData.h,
         debug = Config.DebugMode,
         onEnter = function()
-            TriggerEvent('qb-garages:client:setHouseGarage', self.property_id, true)
+            --TriggerEvent('qb-garages:client:setHouseGarage', self.property_id, true)
         end,
     })
 end
@@ -191,7 +193,8 @@ end
 function Property:UnregisterGarageZone()
     if not self.garageZone then return end
 
-    TriggerEvent("qb-garages:client:removeHouseGarage", self.property_id)
+    --TODO: Migrate to frp_parkings
+    --TriggerEvent("qb-garages:client:removeHouseGarage", self.property_id)
 
     self.garageZone:remove()
     self.garageZone = nil
@@ -656,7 +659,8 @@ end
 function Property:UpdateOwner(newOwner)
     self.propertyData.owner = newOwner
 
-    local citizenid = PlayerData.citizenid
+    --local citizenid = PlayerData.citizenid
+    local citizenid = PlayerData.identifier
 
     self.owner = newOwner == citizenid
 
@@ -685,7 +689,8 @@ function Property:UpdateDoor(newDoor, newStreet, newRegion)
 end
 
 function Property:UpdateHas_access(newHas_access)
-    local citizenid = PlayerData.citizenid
+    --local citizenid = PlayerData.citizenid
+    local citizenid = PlayerData.identifier
     self.propertyData.has_access = newHas_access
     self.has_access = lib.table.contains(newHas_access, citizenid)
 
