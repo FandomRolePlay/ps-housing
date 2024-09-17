@@ -42,6 +42,7 @@ if IsDuplicityVersion() then
     
     function Framework.ox.SendLog(message)
             -- noop
+            lib.logger(-1, "ps-housing logger", message)
     end
 
     return
@@ -341,8 +342,8 @@ Framework.ox = {
                     canInteract = function()
                         local job = PlayerData.job
                         local jobName = job.name
-                        local onDuty = job.onduty
-                        return RealtorJobs[jobName] and onDuty
+                        --local onDuty = job.onduty
+                        return RealtorJobs[jobName] --[[and onDuty]]
                     end,
                 },
                 {
@@ -361,10 +362,10 @@ Framework.ox = {
                     canInteract = function()
                         local job = PlayerData.job
                         local jobName = job.name
-                        local gradeAllowed = tonumber(job.grade.level) >= Config.MinGradeToRaid
-                        local onDuty = job.onduty
+                        local gradeAllowed = tonumber(job.grade) >= Config.MinGradeToRaid
+                        --local onDuty = job.onduty
 
-                        return PoliceJobs[jobName] and onDuty and gradeAllowed
+                        return PoliceJobs[jobName] --[[and onDuty]] and gradeAllowed
                     end,
                 },
             },
@@ -401,10 +402,10 @@ Framework.ox = {
                     canInteract = function()
                         local job = PlayerData.job
                         local jobName = job.name
-                        local gradeAllowed = tonumber(job.grade.level) >= Config.MinGradeToRaid
-                        local onDuty = job.onduty
+                        local gradeAllowed = tonumber(job.grade) >= Config.MinGradeToRaid
+                        --local onDuty = job.onduty
 
-                        return PoliceJobs[jobName] and onDuty and gradeAllowed
+                        return PoliceJobs[jobName] --[[and onDuty]] and gradeAllowed
                     end,
                 },
             },

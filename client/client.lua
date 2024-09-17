@@ -1,4 +1,5 @@
-QBCore = exports['qb-core']:GetCoreObject()
+--QBCore = exports['qb-core']:GetCoreObject()
+ESX = exports['es_extended']:getSharedObject()
 PlayerData = {}
 local loaded = false
 
@@ -20,7 +21,6 @@ end)
 function InitialiseProperties(properties)
     if loaded then return end
     Debug("Initialising properties")
-    PlayerData = QBCore.Functions.GetPlayerData()
 
     for k, v in pairs(Config.Apartments) do
         ApartmentsTable[k] = Apartment:new(v)
@@ -39,7 +39,12 @@ function InitialiseProperties(properties)
     Debug("Initialised properties")
     loaded = true
 end
-AddEventHandler("QBCore:Client:OnPlayerLoaded", InitialiseProperties)
+
+RegisterNetEvent("esx:playerLoaded", function(xPlayer)
+    PlayerData = xPlayer
+    InitialiseProperties()
+end)
+
 RegisterNetEvent('ps-housing:client:initialiseProperties', InitialiseProperties)
 
 -- AddEventHandler("onResourceStart", function(resourceName) -- Used for when the resource is restarted while in game
@@ -61,11 +66,11 @@ if GetResourceState('qbx_properties') == 'started' then
     TriggerEvent('ps-housing:setApartments', data)
 end
 
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(job)
+RegisterNetEvent('esx:setJob', function(job)
     PlayerData.job = job
 end)
 
-RegisterNetEvent('ps-housing:client:setupSpawnUI', function(cData)
+--[[RegisterNetEvent('ps-housing:client:setupSpawnUI', function(cData)
     DoScreenFadeOut(1000)
     local result = lib.callback.await('ps-housing:cb:GetOwnedApartment', source, cData.citizenid)
     if result then
@@ -80,7 +85,7 @@ RegisterNetEvent('ps-housing:client:setupSpawnUI', function(cData)
             TriggerEvent('qb-spawn:client:openUI', true)
         end
     end
-end)
+end)--]]
 
 AddEventHandler("onResourceStop", function(resourceName)
 	if (GetCurrentResourceName() == resourceName) then

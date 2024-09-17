@@ -34,7 +34,7 @@ function Property:new(propertyData)
     -- Remove furnitures from property data for memory purposes
     propertyData.furnitures = {}
     self.propertyData = propertyData
-    local citizenid = PlayerData.citizenid
+    local citizenid = PlayerData.identifier
 
     self.owner = propertyData.owner == citizenid
     self.has_access = lib.table.contains(self.propertyData.has_access, citizenid)
@@ -268,7 +268,10 @@ function Property:RegisterGarageZone()
     local isQbx = GetResourceState('qbx_garages') == 'started'
     local coords = vec4(garageData.x, garageData.y, garageData.z, garageData.h)
 
-    if isQbx then
+
+    --TODO: Migrate to frp_parkings
+
+    --[[if isQbx then
         TriggerServerEvent('ps-housing:server:qbxRegisterHouse', self.property_id)
     else
         TriggerEvent("qb-garages:client:addHouseGarage", self.property_id, {
@@ -292,14 +295,15 @@ function Property:RegisterGarageZone()
                 TriggerEvent('qb-garages:client:setHouseGarage', self.property_id, true)
             end,
         })
-    end
+    end]]--
 end
 
 function Property:UnregisterGarageZone()
     if not self.garageZone then return end
 
-    TriggerEvent("qb-garages:client:removeHouseGarage", self.property_id)
-
+    --TODO: Migrate to frp_parkings
+    --TriggerEvent("qb-garages:client:removeHouseGarage", self.property_id)
+    
     self.garageZone:remove()
     self.garageZone = nil
 end
@@ -836,7 +840,7 @@ end
 function Property:UpdateOwner(newOwner)
     self.propertyData.owner = newOwner
 
-    local citizenid = PlayerData.citizenid
+    local citizenid = PlayerData.identifier
 
     self.owner = newOwner == citizenid
 
@@ -868,7 +872,7 @@ function Property:UpdateDoor(newDoor, newStreet, newRegion)
 end
 
 function Property:UpdateHas_access(newHas_access)
-    local citizenid = PlayerData.citizenid
+    local citizenid = PlayerData.identifier
     self.propertyData.has_access = newHas_access
     self.has_access = lib.table.contains(newHas_access, citizenid)
 

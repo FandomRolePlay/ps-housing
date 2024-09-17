@@ -475,11 +475,26 @@ Modeler = {
             totalPrice = totalPrice + v.price
         end
 
-        PlayerData = QBCore.Functions.GetPlayerData()
-        if PlayerData.money.cash < totalPrice and PlayerData.money.bank < totalPrice then
+        PlayerData = ESX.GetPlayerData()
+
+        local bank = 0
+        local money = 0
+
+        for i=1, #PlayerData.accounts do
+            local account = PlayerData.accounts[i]
+            if account.name == "money" then
+                money = account.money
+            end
+
+            if account.name == "bank" then
+                bank = account.money
+            end
+        end
+        if money < totalPrice and bank < totalPrice then
 	        Framework[Config.Notify].Notify("You don't have enough money!", "error")
             return
         end
+
         local property = Property.Get(self.property_id)
 
         for _, v in pairs(self.Cart) do
